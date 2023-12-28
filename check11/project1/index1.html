@@ -1,0 +1,37 @@
+<head>
+    <title>To Do</title>
+</head>
+<body>
+    Title: <input type="text" id="title"><br>
+    Description: <input type="text" id="description">
+    <button onclick="onPress()">Submit</button>
+    <div id="mainArea"></div>
+</body>
+<script>
+    function onPress(){
+        fetch("http://localhost:3000/todos",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: document.getElementById("title").value,
+                description: document.getElementById("description").value
+            })
+        }).then(async x=>{
+            console.log(await x.json());
+        })
+    }
+    function b(data){
+        console.log(data);
+        var parentElement=document.getElementById("mainArea");
+        parentElement.innerHTML=JSON.stringify(data);
+    }
+    function a(res){
+        res.json().then(b);
+    }
+    function getData(){
+        fetch("http://localhost:3000/todos").then(a);
+    }
+    getData();
+</script>

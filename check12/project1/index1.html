@@ -1,0 +1,86 @@
+<head>
+    <title>To Do</title>
+</head>
+<body>
+    Title: <input type="text" id="title"><br>
+    Description: <input type="text" id="description">
+    <button onclick="onPress()">Submit</button>
+    <div id="mainArea"></div>
+</body>
+<script>
+    function createDOMElements(data){
+        var parentElement=document.getElementById("mainArea");
+        parentElement.innerHTML="";
+        for(var i=0;i<data.length;i++){
+            var childElement=document.createElement("div");
+            childElement.id=data[i].id;
+            var grandChildElement1=document.createElement("span");
+            grandChildElement1.innerHTML=data[i].title;
+            var grandChildElement2=document.createElement("span");
+            grandChildElement2.innerHTML=data[i].description;
+            var grandChildElement3=document.createElement("button");
+            grandChildElement3.innerHTML="Delete";
+            grandChildElement3.setAttribute("onclick","deleteToDo("+data[i].id+")");
+            childElement.appendChild(grandChildElement1);
+            childElement.appendChild(grandChildElement2);
+            childElement.appendChild(grandChildElement3);
+            parentElement.appendChild(childElement);
+        }
+    }
+    function createDOMElement(data){
+        var parentElement=document.getElementById("mainArea");
+        var childElement=document.createElement("div");
+        childElement.id=data.id;
+        var grandChildElement1=document.createElement("span");
+        grandChildElement1.innerHTML=data.title;
+        var grandChildElement2=document.createElement("span");
+        grandChildElement2.innerHTML=data.description;
+        var grandChildElement3=document.createElement("button");
+        grandChildElement3.innerHTML="Delete";
+        grandChildElement3.setAttribute("onclick","deleteToDo("+data.id+")");
+        childElement.appendChild(grandChildElement1);
+        childElement.appendChild(grandChildElement2);
+        childElement.appendChild(grandChildElement3);
+        parentElement.appendChild(childElement);
+    }
+    function deleteToDo(id){
+        fetch("http://localhost:3000/todos/"+id,{
+            method: "DELETE"
+        }).then(function(){
+            var parentElement=document.getElementById("mainArea");
+            var childElement=document.getElementById(id);
+            parentElement.removeChild(childElement);
+            console.log("The To Do with id "+id+" has been deleted");
+        })
+    }
+    function b1(data){
+        console.log(data);
+        createDOMElement(data);
+    }
+    function a1(res){
+        res.json().then(b1);
+    }
+    function onPress(){
+        fetch("http://localhost:3000/todos",{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title: document.getElementById("title").value,
+                description: document.getElementById("description").value
+            })
+        }).then(a1)
+    }
+    function b(data){
+        console.log(data);
+        createDOMElements(data);
+    }
+    function a(res){
+        res.json().then(b);
+    }
+    function getData(){
+        fetch("http://localhost:3000/todos").then(a);
+    }
+    getData();
+</script>

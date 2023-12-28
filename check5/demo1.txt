@@ -1,0 +1,1 @@
+frontend and backend(http servers - (request methods(get,post,put,delete), url route, query params, headers, body, status codes, response(html, json, text)), authentication, databases, middlewares), client-server model
