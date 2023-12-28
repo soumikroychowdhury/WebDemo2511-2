@@ -37,7 +37,7 @@ type i2={
     id?:string;
     title?:string;
     description?:string;
-    staus?:boolean;
+    status?:boolean;
 }
 type InputType=Partial<i2>
 function updateInfo(id:number,new1:InputType){
